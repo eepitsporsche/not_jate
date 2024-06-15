@@ -1,10 +1,9 @@
+//Webpack Configuration Imports
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
-// TODO: Add and configure workbox plugins for a service worker and manifest file.
-// TODO: Add CSS loaders and babel to webpack.
 
 module.exports = () => {
   return {
@@ -18,12 +17,58 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      
+      //Generate HTML File and Inject Bundles
+      new HtmlWebpackPlugin({
+        template: './index.html',
+        title: 'Text Editor'
+      }),
+
+      //Custom Service Worker
+      new InjectManifest ({
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js'
+      }),
+
+      //Manifest PWA Configuration .JSON File
+      new WebpackPwaManifest ({
+        fingerprints: false,
+        inject: true,
+        name: 'Text Editor',
+        short_name: 'Text',
+        description: 'A place to keep your notes.',
+        background_color: '#225ca3',
+        theme_color: '#225ca3',
+        start_url: '/',
+        publicPath: '/',
+        icons: [
+          {
+            src: path.resolve('src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons')
+          }
+        ]
+      })
     ],
 
     module: {
       rules: [
-        
+        //CSS Loader to Load CSS Files and Style Loader to Inject CSS into DOM
+        {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader']
+        },
+        //Babel-Loader to Use ES6
+        {
+          test: /\.m?js$/,
+          exclude: /node_mondules/,
+          use: {
+            loader: 'babel-loader',
+            options: [
+              '@babel/plugin-proposal-object-rest-spread',
+              '@babel/transform-runtime',
+            ]
+          }
+        }
       ],
     },
   };
