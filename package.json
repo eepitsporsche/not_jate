@@ -17,13 +17,14 @@
   "dependencies": {
     "css-loader": "^6.8.1",
     "express": "^4.17.1",
-    "if-env": "^1.0.4"
+    "if-env": "^1.0.4",
+    "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4",
     "html-webpack-plugin": "^5.5.3",
+    "nodemon": "^2.0.4",
     "webpack-pwa-manifest": "^4.3.0"
   }
 }
